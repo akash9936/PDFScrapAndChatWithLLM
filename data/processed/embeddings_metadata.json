@@ -1,26 +1,26 @@
 {
-  "creation_date": "2025-07-27T16:38:43.180153",
+  "creation_date": "2025-07-27T17:15:56.162511",
   "model_name": "all-MiniLM-L6-v2",
-  "total_chunks": 69,
+  "total_chunks": 128,
   "embedding_dimension": 384,
   "normalization": "l2",
   "chunk_statistics": {
-    "total_chunks": 69,
-    "avg_word_count": 9143.0,
-    "avg_char_count": 54724.14492753623,
+    "total_chunks": 128,
+    "avg_word_count": 1164.109375,
+    "avg_char_count": 7397.890625,
     "content_types": {
-      "text": 25,
-      "verse": 33,
-      "commentary": 11
+      "text": 40,
+      "verse": 26,
+      "commentary": 62
     },
     "languages": {
-      "english": 69
+      "english": 128
     },
     "book_types": {
-      "bhagavad_gita": 69
+      "purana": 128
     },
     "sources": {
-      "Four-Vedas-English-Translation.pdf": 69
+      "The_Chronology_of_Ancient_India_Victim_o.pdf": 128
     }
   }
 }

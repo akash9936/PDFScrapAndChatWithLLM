@@ -1,18 +1,18 @@
 {
-  "processing_date": "2025-07-27T16:38:33.774890",
-  "total_chunks": 69,
+  "processing_date": "2025-07-27T17:15:50.958442",
+  "total_chunks": 128,
   "total_files": 0,
-  "total_characters": 3776762,
+  "total_characters": 948746,
   "chunk_types": {
-    "text": 25,
-    "verse": 33,
-    "commentary": 11
+    "text": 40,
+    "verse": 26,
+    "commentary": 62
   },
   "languages": {
-    "english": 69
+    "english": 128
   },
   "book_types": {
-    "bhagavad_gita": 69
+    "purana": 128
   },
   "errors": []
 }
