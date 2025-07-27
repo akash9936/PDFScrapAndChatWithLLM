@@ -1,0 +1,187 @@
+# Bhagavad Gita Spiritual Chatbot Project
+
+## Overview
+This project is a sophisticated AI-powered spiritual guidance chatbot that provides wisdom from the Bhagavad Gita using advanced RAG (Retrieval Augmented Generation) with agentic workflows. The chatbot can answer questions about dharma, karma, spiritual practice, life's purpose, and various life challenges based on the teachings of the Bhagavad Gita.
+
+## Key Features
+- **Intelligent Semantic Search**: Advanced search through Gita content using vector embeddings
+- **Context-Aware Spiritual Guidance**: Specialized responses based on question type analysis
+- **Chapter-wise Organization**: Structured processing of Gita content into chapters and verses
+- **Agentic Workflow**: Multiple specialized agents for different aspects (PDF processing, vector search, spiritual guidance)
+- **Modern RAG Architecture**: Built with LangChain and state-of-the-art NLP models
+- **Free to Run**: Uses free tiers of Groq API and open-source models
+- **Interactive Web Interface**: Streamlit-based chat interface
+
+## Technical Architecture
+
+### Core Components
+1. **Config Management**: Centralized configuration for API keys, models, and file paths
+2. **PDF Processor Agent**: Extracts and structures content from Bhagavad Gita PDF
+3. **Vector Store Agent**: Creates embeddings and handles similarity search using FAISS
+4. **Spiritual Guidance Agent**: Main agent providing contextual spiritual responses
+5. **Streamlit Interface**: Web-based chat interface for user interaction
+
+### Technology Stack
+- **LangChain**: Framework for building LLM applications
+- **Groq API**: Fast inference with Mixtral-8x7b model (free tier: 30 requests/minute)
+- **FAISS**: Vector database for similarity search
+- **Sentence Transformers**: Text embeddings using all-MiniLM-L6-v2 model
+- **Streamlit**: Web interface framework
+- **PyMuPDF**: PDF text extraction
+- **Python-dotenv**: Environment variable management
+
+## Project Structure
+```
+SpritualGuru/
+├── app.py                      # Main application entry point
+├── requirements.txt            # Python dependencies
+├── README.md                   # Quick start guide
+├── project.txt                 # This detailed project documentation
+├── chatbot.py                  # Original monolithic version (backup)
+├── .env                        # Environment variables (API keys)
+├── src/                        # Source code package
+│   ├── __init__.py
+│   ├── config.py               # Configuration management
+│   ├── agents/                 # AI agents
+│   │   ├── __init__.py
+│   │   └── spiritual_guidance.py
+│   ├── utils/                  # Utility modules
+│   │   ├── __init__.py
+│   │   ├── pdf_processor.py    # PDF processing agent
+│   │   └── vector_store.py     # Vector database agent
+│   └── ui/                     # User interface
+│       ├── __init__.py
+│       └── streamlit_app.py    # Streamlit web interface
+└── data/                       # Data directory
+    ├── shreemad_bhagavad_gita.pdf    # Source PDF
+    └── processed/              # Processed data
+        ├── chunks.json             # Text chunks
+        └── embeddings.faiss        # Vector embeddings
+```
+
+## Setup Instructions
+
+### 1. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Get Free Groq API Key
+- Visit: https://console.groq.com
+- Sign up for free account
+- Create API key (30 requests/minute free tier)
+
+### 3. Prepare Data
+- Create 'data' folder in project root
+- Place your Bhagavad Gita PDF as 'data/shreemad_bhagavad_gita.pdf'
+
+### 4. Environment Setup
+- Create .env file with: `GROQ_API_KEY=your_key_here`
+- Or enter key in the Streamlit sidebar when running
+
+### 5. Run the Application
+```bash
+streamlit run app.py
+```
+
+### 6. First Time Setup
+- Click "Process PDF" in sidebar
+- Wait for processing to complete
+- Start asking spiritual questions!
+
+## Usage Examples
+
+### Sample Questions
+- "What is my dharma in life?"
+- "How do I deal with suffering?"
+- "What does the Gita say about karma?"
+- "How can I find inner peace?"
+- "What is the meaning of life according to Krishna?"
+- "How should I handle difficult decisions?"
+- "What is the path to self-realization?"
+
+### Question Types Supported
+- **Dharma & Purpose**: Life's duties and righteous path
+- **Karma & Action**: Understanding action and consequences
+- **Spiritual Practice**: Meditation, devotion, and self-discipline
+- **Life Challenges**: Dealing with suffering, doubt, and conflict
+- **Philosophy**: Deep spiritual and philosophical concepts
+
+## Dependencies
+```
+langchain==0.1.0
+langchain-community==0.0.13
+langchain-groq==0.0.1
+faiss-cpu==1.7.4
+sentence-transformers==2.2.2
+streamlit==1.29.0
+pymupdf==1.23.14
+python-dotenv==1.0.0
+tiktoken==0.5.2
+```
+
+## Configuration Parameters
+- **GROQ_MODEL**: "mixtral-8x7b-32768" (Free and powerful)
+- **EMBEDDING_MODEL**: "all-MiniLM-L6-v2" (Free sentence transformer)
+- **CHUNK_SIZE**: 1000 characters
+- **CHUNK_OVERLAP**: 200 characters
+- **MAX_TOKENS**: 4000 tokens per response
+
+## Features in Detail
+
+### Intelligent PDF Processing
+- Extracts clean text from PDF
+- Structures content into chapters and verses
+- Removes headers, footers, and page numbers
+- Creates meaningful text chunks for better retrieval
+
+### Advanced Vector Search
+- Uses sentence transformers for semantic embeddings
+- FAISS index for fast similarity search
+- Retrieves most relevant passages for each query
+- Context-aware chunk selection
+
+### Agentic Response Generation
+- Analyzes question type for specialized responses
+- Provides contextual spiritual guidance
+- Maintains conversation flow and coherence
+- Offers practical wisdom applicable to modern life
+
+## Development Notes
+
+### Modular Architecture Benefits
+- **Separation of Concerns**: Each module has a specific responsibility
+- **Maintainability**: Easy to update individual components without affecting others
+- **Scalability**: Simple to add new agents, utilities, or UI components
+- **Testability**: Individual modules can be tested in isolation
+- **Code Reusability**: Components can be imported and used across different parts
+- **Clean Imports**: Proper Python package structure with __init__.py files
+
+### Code Organization
+- **src/config.py**: Centralized configuration management
+- **src/agents/**: AI agents for specialized tasks
+- **src/utils/**: Utility modules for PDF processing and vector operations
+- **src/ui/**: User interface components
+- **app.py**: Main entry point that ties everything together
+- **chatbot.py**: Original monolithic version kept as backup
+
+### Technical Features
+- Error handling for missing files and API keys
+- Streamlit session state management for chat history
+- Responsive UI with loading indicators and status messages
+- Proper Python package structure with relative imports
+- Comprehensive logging and user feedback
+
+## Future Enhancements
+- Multi-language support (Sanskrit, Hindi, English)
+- Voice interaction capabilities
+- Personalized spiritual guidance based on user history
+- Integration with other spiritual texts
+- Advanced conversation memory and context retention
+- Mobile app development
+
+## License
+This project is designed for educational and spiritual guidance purposes. Please respect the sacred nature of the Bhagavad Gita and use this tool mindfully.
+
+---
+*"You have the right to perform your actions, but you are not entitled to the fruits of action." - Bhagavad Gita 2.47*

@@ -1,0 +1,30 @@
+{
+  "creation_date": "2025-07-27T06:29:18.457323",
+  "model_name": "all-MiniLM-L6-v2",
+  "total_chunks": 168,
+  "embedding_dimension": 384,
+  "normalization": "l2",
+  "chunk_statistics": {
+    "total_chunks": 168,
+    "avg_word_count": 8261.607142857143,
+    "avg_char_count": 46977.07738095238,
+    "content_types": {
+      "commentary": 101,
+      "text": 34,
+      "verse": 33
+    },
+    "languages": {
+      "english": 168
+    },
+    "book_types": {
+      "bhagavad_gita": 167,
+      "unknown": 1
+    },
+    "sources": {
+      "Osho - the Book of secrets.pdf": 80,
+      "The Power of Positive Thinking ( PDFDrive ).pdf": 18,
+      "Atomic Habits - James Clear 2018_0.pdf": 1,
+      "Vedas.pdf": 69
+    }
+  }
+}
