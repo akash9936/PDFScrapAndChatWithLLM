@@ -31,7 +31,6 @@ sentence-transformers==2.2.2
 streamlit==1.29.0
 pdfplumber==0.10.2
 python-dotenv==1.0.0
-tiktoken==0.5.2
 """
 
 # ================================

@@ -6,7 +6,6 @@ sentence-transformers==3.0.1
 streamlit==1.29.0
 pdfplumber==0.10.2
 python-dotenv==1.0.0
-tiktoken==0.5.2
 
 # Google Gemini support
 google-generativeai>=0.3.0
