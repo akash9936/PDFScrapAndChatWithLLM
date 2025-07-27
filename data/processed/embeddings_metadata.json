@@ -1,26 +1,25 @@
 {
-  "creation_date": "2025-07-27T17:15:56.162511",
+  "creation_date": "2025-07-27T17:55:22.377055",
   "model_name": "all-MiniLM-L6-v2",
-  "total_chunks": 128,
+  "total_chunks": 80,
   "embedding_dimension": 384,
   "normalization": "l2",
   "chunk_statistics": {
-    "total_chunks": 128,
-    "avg_word_count": 1164.109375,
-    "avg_char_count": 7397.890625,
+    "total_chunks": 80,
+    "avg_word_count": 8298.95,
+    "avg_char_count": 44945.125,
     "content_types": {
-      "text": 40,
-      "verse": 26,
-      "commentary": 62
+      "commentary": 73,
+      "text": 7
     },
     "languages": {
-      "english": 128
+      "english": 80
     },
     "book_types": {
-      "purana": 128
+      "bhagavad_gita": 80
     },
     "sources": {
-      "The_Chronology_of_Ancient_India_Victim_o.pdf": 128
+      "Osho - the Book of secrets.pdf": 80
     }
   }
 }

@@ -1,0 +1,17 @@
+{
+  "processing_date": "2025-07-27T17:55:16.116897",
+  "total_chunks": 80,
+  "total_files": 0,
+  "total_characters": 3596503,
+  "chunk_types": {
+    "commentary": 73,
+    "text": 7
+  },
+  "languages": {
+    "english": 80
+  },
+  "book_types": {
+    "bhagavad_gita": 80
+  },
+  "errors": []
+}

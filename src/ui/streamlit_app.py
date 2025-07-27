@@ -35,8 +35,12 @@ def main():
     
     if model_selection and len(model_selection) == 2:
         selected_provider, selected_model = model_selection
-        # Main chat interface with selected model
-        chat_interface(selected_provider, selected_model)
+        # Check that both values are not None
+        if selected_provider and selected_model:
+            # Main chat interface with selected model
+            chat_interface(selected_provider, selected_model)
+        else:
+            st.error("Please configure a model provider in the sidebar to continue.")
     else:
         st.error("Please configure a model provider in the sidebar to continue.")
 
@@ -261,6 +265,11 @@ def chat_interface(selected_provider: str, selected_model: str):
     
     # Initialize chatbot with selected model
     if 'chatbot' not in st.session_state:
+        # Validate that we have a selected provider and model
+        if not selected_provider or not selected_model:
+            st.error("❌ Please select both a model provider and a model from the sidebar.")
+            return
+        
         with st.spinner(f"🔮 Initializing book analyzer with {selected_provider.title()} {selected_model}..."):
             st.session_state.chatbot = initialize_chatbot(selected_provider, selected_model)
     
