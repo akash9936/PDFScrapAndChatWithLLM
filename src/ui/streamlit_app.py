@@ -49,7 +49,50 @@ def setup_sidebar():
     
     # Book Processing
     st.sidebar.subheader("📖 Data Processing")
-    if st.sidebar.button("Process Books", help="Extract and process book PDFs"):
+    
+    # PDF Upload Section
+    uploaded_file = st.sidebar.file_uploader(
+        "Upload PDF Book", 
+        type=['pdf'],
+        help="Upload a PDF book to analyze",
+        key="pdf_uploader"
+    )
+    
+    # Store uploaded file in session state
+    if uploaded_file is not None:
+        st.session_state.uploaded_pdf = uploaded_file
+        st.sidebar.success(f"✅ PDF uploaded: {uploaded_file.name}")
+    
+    # Process and Reset buttons in columns
+    col1, col2 = st.sidebar.columns(2)
+    
+    with col1:
+        process_clicked = st.button(
+            "🔄 Process", 
+            help="Process the uploaded PDF",
+            disabled=not hasattr(st.session_state, 'uploaded_pdf'),
+            use_container_width=True
+        )
+    
+    with col2:
+        reset_clicked = st.button(
+            "🗑️ Reset", 
+            help="Clear all data and reset",
+            use_container_width=True
+        )
+    
+    # Handle process button click
+    if process_clicked and hasattr(st.session_state, 'uploaded_pdf'):
+        process_uploaded_pdf(st.session_state.uploaded_pdf)
+    
+    # Handle reset button click
+    if reset_clicked:
+        reset_pdf_data()
+    
+    # Legacy process all PDFs button (for existing PDFs in data folder)
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("**Or process existing PDFs:**")
+    if st.sidebar.button("Process All PDFs in Data Folder", help="Extract and process all PDF files from data directory"):
         process_pdf_data()
     
     # Check if data is processed
@@ -262,8 +305,109 @@ def chat_interface(selected_provider: str, selected_model: str):
                     st.session_state.messages.append({"role": "assistant", "content": error_msg})
 
 
+def process_uploaded_pdf(uploaded_file):
+    """Process a single uploaded PDF file"""
+    config = Config()
+    
+    with st.spinner(f"📖 Processing {uploaded_file.name}..."):
+        try:
+            # Save uploaded file temporarily
+            temp_dir = Path("temp_uploads")
+            temp_dir.mkdir(exist_ok=True)
+            
+            temp_file_path = temp_dir / uploaded_file.name
+            with open(temp_file_path, "wb") as f:
+                f.write(uploaded_file.getbuffer())
+            
+            # Process the uploaded PDF
+            processor = PDFProcessor(config)
+            
+            # Extract text from the uploaded PDF
+            text = processor.extract_text_from_pdf(str(temp_file_path))
+            if not text:
+                st.error("❌ Failed to extract text from PDF")
+                return
+            
+            # Create chunks from the text
+            chunks = processor.create_chapters_and_verses(text, source_file=uploaded_file.name)
+            
+            if chunks:
+                # Save chunks
+                processor.save_chunks(chunks)
+                
+                # Create embeddings
+                vector_store = VectorStoreAgent(config)
+                vector_store.create_embeddings(chunks)
+                
+                st.success(f"✅ {uploaded_file.name} processed successfully!")
+                st.sidebar.info(f"📊 {len(chunks)} text chunks created")
+                
+                # Clear chatbot to reinitialize with new data
+                if 'chatbot' in st.session_state:
+                    del st.session_state.chatbot
+                
+                st.rerun()
+            else:
+                st.error("❌ Failed to create chunks from PDF")
+            
+            # Clean up temporary file
+            if temp_file_path.exists():
+                temp_file_path.unlink()
+                
+        except Exception as e:
+            st.error(f"❌ Error processing PDF: {str(e)}")
+            # Clean up on error
+            temp_file_path = Path("temp_uploads") / uploaded_file.name
+            if temp_file_path.exists():
+                temp_file_path.unlink()
+
+
+def reset_pdf_data():
+    """Reset all PDF data and clear session state"""
+    config = Config()
+    
+    with st.spinner("🗑️ Resetting data..."):
+        try:
+            # Clear processed chunks file
+            chunks_path = Path(config.CHUNKS_PATH)
+            if chunks_path.exists():
+                chunks_path.unlink()
+            
+            # Clear embeddings
+            embeddings_path = Path(config.EMBEDDINGS_PATH)
+            if embeddings_path.exists():
+                embeddings_path.unlink()
+            
+            # Clear metadata
+            metadata_path = Path("data/processed/processing_metadata.json")
+            if metadata_path.exists():
+                metadata_path.unlink()
+            
+            # Clear session state
+            if 'uploaded_pdf' in st.session_state:
+                del st.session_state.uploaded_pdf
+            if 'chatbot' in st.session_state:
+                del st.session_state.chatbot
+            if 'messages' in st.session_state:
+                del st.session_state.messages
+            
+            # Clear temporary uploads directory
+            temp_dir = Path("temp_uploads")
+            if temp_dir.exists():
+                for file in temp_dir.glob("*"):
+                    file.unlink()
+                temp_dir.rmdir()
+            
+            st.success("✅ All data reset successfully!")
+            st.sidebar.success("Ready for new PDF upload")
+            st.rerun()
+            
+        except Exception as e:
+            st.error(f"❌ Error resetting data: {str(e)}")
+
+
 def process_pdf_data():
-    """Process books and create embeddings"""
+    """Process books and create embeddings (legacy function for data folder PDFs)"""
     config = Config()
     
     with st.spinner("📖 Processing books..."):

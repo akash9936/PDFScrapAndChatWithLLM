@@ -1,3 +1,6 @@
+source .venv/bin/activate && streamlit run app.py
+pkill -f streamlit
+
 # 📚 PDF Scraping & Chat with LLM
 
 A sophisticated AI-powered document analysis and chatbot system that extracts content from PDFs and provides intelligent responses using advanced RAG (Retrieval Augmented Generation) with multiple LLM providers.
@@ -5,6 +8,9 @@ A sophisticated AI-powered document analysis and chatbot system that extracts co
 ## ✨ Features
 
 - **Multi-Provider LLM Support**: Choose from Groq, Google Gemini, or Ollama
+- **PDF Upload Interface**: Upload PDFs directly through the web interface
+- **One-Click Processing**: Process uploaded PDFs with a single button click
+- **Reset & Multi-PDF Support**: Reset data and process multiple PDFs sequentially
 - **Intelligent PDF Processing**: Advanced text extraction and chunking
 - **Semantic Search**: Vector-based document retrieval using embeddings
 - **Context-Aware Responses**: Specialized AI agents for document analysis
