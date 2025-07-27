@@ -9,7 +9,7 @@ Improved modules with better error handling, logging, and multi-format support.
 # pdf_processor.py - Enhanced PDF Processing
 # ================================
 
-import fitz  # PyMuPDF
+import pdfplumber
 import json
 import re
 import os
@@ -89,28 +89,27 @@ class PDFProcessor:
                 self.stats.errors.append(error_msg)
                 return None
             
-            doc = fitz.open(pdf_path)
             full_text = ""
-            page_count = len(doc)
+            page_count = 0
             
-            for page_num in range(page_count):
-                try:
-                    page = doc.load_page(page_num)
-                    text = page.get_text()
-                    
-                    # Clean the text
-                    text = self._clean_text(text)
-                    full_text += text + "\n"
-                    
-                    # Progress indicator for large files
-                    if page_count > 50 and page_num % 10 == 0:
-                        logger.info(f"Processed {page_num}/{page_count} pages...")
+            with pdfplumber.open(pdf_path) as pdf:
+                page_count = len(pdf.pages)
+                
+                for page_num, page in enumerate(pdf.pages):
+                    try:
+                        text = page.extract_text() or ""  # Handle None case
                         
-                except Exception as e:
-                    logger.warning(f"Error processing page {page_num}: {e}")
-                    continue
-            
-            doc.close()
+                        # Clean the text
+                        text = self._clean_text(text)
+                        full_text += text + "\n"
+                        
+                        # Progress indicator for large files
+                        if page_count > 50 and page_num % 10 == 0:
+                            logger.info(f"Processed {page_num}/{page_count} pages...")
+                            
+                    except Exception as e:
+                        logger.warning(f"Error processing page {page_num}: {e}")
+                        continue
             
             char_count = len(full_text)
             self.stats.total_characters += char_count

@@ -29,7 +29,7 @@ langchain-groq==0.0.1
 faiss-cpu==1.7.4
 sentence-transformers==2.2.2
 streamlit==1.29.0
-pymupdf==1.23.14
+pdfplumber==0.10.2
 python-dotenv==1.0.0
 tiktoken==0.5.2
 """
@@ -63,7 +63,7 @@ class Config:
 # ================================
 # pdf_processor.py - PDF Processing Agent
 # ================================
-import fitz  # PyMuPDF
+import pdfplumber
 import json
 import re
 from typing import List, Dict
@@ -80,18 +80,20 @@ class BookProcessor:
         """Extract clean text from PDF"""
         print(f"📖 Extracting text from {pdf_path}...")
         
-        doc = fitz.open(pdf_path)
         full_text = ""
         
-        for page_num in range(len(doc)):
-            page = doc.load_page(page_num)
-            text = page.get_text()
-            
-            # Clean the text
-            text = self._clean_text(text)
-            full_text += text + "\n"
+        with pdfplumber.open(pdf_path) as pdf:
+            for page in pdf.pages:
+                try:
+                    text = page.extract_text() or ""  # Handle None case
+                    
+                    # Clean the text
+                    text = self._clean_text(text)
+                    full_text += text + "\n"
+                except Exception as e:
+                    print(f"Warning: Error processing page: {e}")
+                    continue
         
-        doc.close()
         print(f"✅ Extracted {len(full_text)} characters from PDF")
         return full_text
     
